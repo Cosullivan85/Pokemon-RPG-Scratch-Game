@@ -9,10 +9,9 @@ WhenGreenFlagClicked()
 {
     Forever
     {
-        If (((Sensing.MouseDown() And Sensing.TouchingObject(_mouse_)) And (BATTLE SCENE == "true")) And (PLAYER TURN == 1))
+        If ((Sensing.TouchingObject(_mouse_) And Sensing.MouseDown()) And (BATTLE SCENE == "true"))
         {
             Event.Broadcast("Rock Throw");
-            Event.Broadcast("hide");
         }
     }
 }

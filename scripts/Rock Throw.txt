@@ -32,7 +32,6 @@ WhenBroadcastReceived(Rock Throw)
         Control.Wait(.25);
         Looks.Hide();
         ATTACK CHOICE = Operator.Random(1 / 3);
-        PLAYER TURN = 2;
         Event.BroadcastAndWait("DAMAGE");
     }
 }

@@ -27,13 +27,6 @@ WhenBroadcastReceived(Psychic)
     {
         Event.Broadcast("Player defeated");
     }
-    Else
-    {
-        If (player out > 1)
-        {
-            Event.Broadcast("Player defeated");
-        }
-    }
     Call Show Health(PLAYER HEALTH) of(100);
 }
 
@@ -43,13 +36,6 @@ WhenBroadcastReceived(Tri Attack)
     If (PLAYER HEALTH < 1)
     {
         Event.Broadcast("Player defeated");
-    }
-    Else
-    {
-        If (player out > 1)
-        {
-            Event.Broadcast("Player defeated");
-        }
     }
     Call Show Health(PLAYER HEALTH) of(100);
 }

@@ -20,6 +20,21 @@ WhenBroadcastReceived(Battle Scene)
     Call Show Health(OPPONENT1 HEALTH) of(100);
 }
 
+WhenBroadcastReceived(DAMAGE)
+{
+    OPPONENT1 HEALTH += -20;
+    PLAYER TURN = 2;
+    If (OPPONENT1 HEALTH > 1)
+    {
+        Event.Broadcast("Opponent Attack");
+    }
+    Else
+    {
+        Event.Broadcast("Opponent1 defeated");
+    }
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+}
+
 WhenBroadcastReceived(Heal)
 {
     If (Operator.Random(0 / 1) == 1)
@@ -35,48 +50,6 @@ WhenBroadcastReceived(Heal)
     {
         Event.Broadcast("Opponent1 defeated");
     }
-}
-
-WhenBroadcastReceived(Quick attack)
-{
-    OPPONENT1 HEALTH += -10;
-    If (OPPONENT1 HEALTH > 1)
-    {
-        Event.Broadcast("Opponent Attack");
-    }
-    Else
-    {
-        Event.Broadcast("Opponent1 defeated");
-    }
-    Call Show Health(OPPONENT1 HEALTH) of(100);
-}
-
-WhenBroadcastReceived(Rock Throw)
-{
-    OPPONENT1 HEALTH += -20;
-    If (OPPONENT1 HEALTH > 1)
-    {
-        Event.Broadcast("Opponent Attack");
-    }
-    Else
-    {
-        Event.Broadcast("Opponent1 defeated");
-    }
-    Call Show Health(OPPONENT1 HEALTH) of(100);
-}
-
-WhenBroadcastReceived(shadow ball)
-{
-    OPPONENT1 HEALTH += -30;
-    If (OPPONENT1 HEALTH > 1)
-    {
-        Event.Broadcast("Opponent Attack");
-    }
-    Else
-    {
-        Event.Broadcast("Opponent1 defeated");
-    }
-    Call Show Health(OPPONENT1 HEALTH) of(100);
 }
 
 

@@ -1,7 +1,7 @@
 //----- Variables -----------------------------------------------------------------------------------------------------
 
 ATTACK CHOICE = 0
-BATTLE SCENE = false
+BATTLE SCENE = true
 CAM X = 625
 CAM Y = 185
 EDITOR = 0
@@ -11,18 +11,16 @@ GMUL = 10000
 gy = 5
 LAYER = 3
 ONION MODE = 0
-OPPONENT1 HEALTH = -20
-picachu defeated = 0
+OPPONENT1 HEALTH = 60
 PLAYER DIR = 0
-PLAYER HEALTH = 80
-player out = 0
+PLAYER HEALTH = 100
 PLAYER TURN = 1
 PLAYER X = 625
 PLAYER Y = 185
-POKEMON CHOICE = gengar
+POKEMON CHOICE = geodude
 pokemon health = 0
 PROFESSOR OAK VISITED = 1
-TICK = 1028
+TICK = 915
 
 
 //----- Lists ---------------------------------------------------------------------------------------------------------
@@ -1659,7 +1657,7 @@ GRID = {
     
     
     
-    
+    468
     
     
     
@@ -1759,7 +1757,7 @@ GRID = {
     
     76
     
-    
+    468
     
     44
     

@@ -1,8 +1,8 @@
 //----- Variables -----------------------------------------------------------------------------------------------------
 
-i = 22
-txt = Unown used Tri Attack!
-xx = 92
+i = 16
+txt = Unown used Heal!
+xx = 18
 
 
 //----- Lists ---------------------------------------------------------------------------------------------------------
@@ -205,25 +205,11 @@ WhenBroadcastReceived(Professor Oak Text)
 WhenBroadcastReceived(Psychic)
 {
     Call Write("Unown used Psychic!") at x(-200) y(28);
-    Control.Wait(2);
+    Control.Wait(1);
+    Call Write("It's not very effective!") at x(-200) y(0);
+    Control.Wait(1);
     Event.Broadcast("Clear Font Letters");
     Looks.Hide();
-}
-
-WhenBroadcastReceived(Psychic)
-{
-    Event.Broadcast("Clear Font Letters");
-    Call Write("It`s not very effettive") at x(-200) y(28);
-    Control.Wait(3);
-    Event.Broadcast("Clear Font Letters");
-    PLAYER X = 625;
-    PLAYER Y = 185;
-    BATTLE SCENE = "false";
-    Looks.SwitchBackdropTo(backdrop1);
-    Event.Broadcast("Battle finished");
-    Event.Broadcast("Start - Game Loop");
-    Looks.Hide();
-    Pen.Clear();
 }
 
 WhenBroadcastReceived(Tri Attack)
@@ -290,11 +276,6 @@ Define Write(string text) at x(string x) y(string y) (warp=true)
         xx += _width[Costume.GetNumberName(number)];
     }
 }
-
-
-//----- Orphaned blocks -----------------------------------------------------------------------------------------------
-
-Motion.GoTo(Attack Box 1)
 
 
 //----- Costumes ------------------------------------------------------------------------------------------------------

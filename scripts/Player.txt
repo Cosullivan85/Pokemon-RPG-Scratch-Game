@@ -1,14 +1,14 @@
 //----- Variables -----------------------------------------------------------------------------------------------------
 
-base costume = 1
-frame = 0
+base costume = 5
+frame = 0.3
 gidx = 620
-gx = 0
+gx = 1
 gy2 = 0
-joy dist = 0
+joy dist = 1
 joy x = 0
-joy y = 0
-pin = 1
+joy y = 1
+pin = 2
 pin string = 000000000
 solid = 0
 tile = 74
