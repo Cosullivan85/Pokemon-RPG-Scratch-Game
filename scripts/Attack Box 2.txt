@@ -1,0 +1,47 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Forever
+    {
+        If (((Sensing.MouseDown() And Sensing.TouchingObject(_mouse_)) And (BATTLE SCENE == "true")) And (PLAYER TURN == 1))
+        {
+            Event.Broadcast("Quick attack");
+            Event.Broadcast("hide");
+        }
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    Costume.GoToFrontBack(front);
+    Looks.Show();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

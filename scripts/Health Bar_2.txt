@@ -1,0 +1,110 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    Motion.GoToXY(-75, 125);
+    Looks.Show();
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+}
+
+WhenBroadcastReceived(Heal)
+{
+    If (Operator.Random(0 / 1) == 1)
+    {
+        OPPONENT1 HEALTH += 20;
+    }
+    Else
+    {
+        Event.Broadcast("Heal failed");
+    }
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+    If (OPPONENT1 HEALTH < 1)
+    {
+        Event.Broadcast("Opponent1 defeated");
+    }
+}
+
+WhenBroadcastReceived(Quick attack)
+{
+    OPPONENT1 HEALTH += -10;
+    If (OPPONENT1 HEALTH > 1)
+    {
+        Event.Broadcast("Opponent Attack");
+    }
+    Else
+    {
+        Event.Broadcast("Opponent1 defeated");
+    }
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+}
+
+WhenBroadcastReceived(Rock Throw)
+{
+    OPPONENT1 HEALTH += -20;
+    If (OPPONENT1 HEALTH > 1)
+    {
+        Event.Broadcast("Opponent Attack");
+    }
+    Else
+    {
+        Event.Broadcast("Opponent1 defeated");
+    }
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+}
+
+WhenBroadcastReceived(shadow ball)
+{
+    OPPONENT1 HEALTH += -30;
+    If (OPPONENT1 HEALTH > 1)
+    {
+        Event.Broadcast("Opponent Attack");
+    }
+    Else
+    {
+        Event.Broadcast("Opponent1 defeated");
+    }
+    Call Show Health(OPPONENT1 HEALTH) of(100);
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Show Health(string health) of(string max) (warp=true)
+{
+    Looks.SwitchCostumeTo((10 * (health / max)));
+    Costume.GoToFrontBack(front);
+    Looks.Show();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+h1.svg
+h2.svg
+h3.svg
+h4.svg
+h5.svg
+h6.svg
+h7.svg
+h8.svg
+h9.svg
+h10.svg
+h11.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

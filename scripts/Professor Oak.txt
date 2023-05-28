@@ -1,0 +1,36 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Left Professor Oaks House)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Professor Oaks House)
+{
+    Looks.Show();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+180px-Lets_Go_Pikachu_Eevee_Professor_Oak.png
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+Cricket.wav
+recording1.wav
+recording2.wav

@@ -1,0 +1,85 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    Motion.GoToXY(40, -55);
+    Looks.Show();
+    Call Show Health(PLAYER HEALTH) of(100);
+}
+
+WhenBroadcastReceived(Psychic)
+{
+    PLAYER HEALTH += -10;
+    If (PLAYER HEALTH < 1)
+    {
+        Event.Broadcast("Player defeated");
+    }
+    Else
+    {
+        If (player out > 1)
+        {
+            Event.Broadcast("Player defeated");
+        }
+    }
+    Call Show Health(PLAYER HEALTH) of(100);
+}
+
+WhenBroadcastReceived(Tri Attack)
+{
+    PLAYER HEALTH += -20;
+    If (PLAYER HEALTH < 1)
+    {
+        Event.Broadcast("Player defeated");
+    }
+    Else
+    {
+        If (player out > 1)
+        {
+            Event.Broadcast("Player defeated");
+        }
+    }
+    Call Show Health(PLAYER HEALTH) of(100);
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Show Health(string health) of(string max) (warp=true)
+{
+    Looks.SwitchCostumeTo((10 * (health / max)));
+    Costume.GoToFrontBack(front);
+    Looks.Show();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+h1.svg
+h2.svg
+h3.svg
+h4.svg
+h5.svg
+h6.svg
+h7.svg
+h8.svg
+h9.svg
+h10.svg
+h11.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

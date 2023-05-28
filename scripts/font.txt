@@ -1,0 +1,389 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+i = 22
+txt = Unown used Tri Attack!
+xx = 92
+
+
+//----- Lists ---------------------------------------------------------------------------------------------------------
+
+_offset x = { 
+    256
+    244
+    232
+    220
+    208
+    196
+    184
+    172
+    160
+    148
+    136
+    124
+    112
+    88
+    76
+    76
+    64
+    52
+    40
+    28
+    16
+    4
+    -8
+    -20
+    -44
+    -56
+    -68
+    -92
+    -104
+    -116
+    -116
+    -128
+    -142
+    -152
+    -176
+    -190
+    -200
+    4
+    -236
+    256
+    232
+    220
+    196
+    172
+    160
+    8
+    124
+    100
+    88
+    76
+    64
+    52
+    28
+    4
+    -20
+    -32
+    -56
+    -68
+    -80
+    -92
+    -116
+    -140
+    -164
+    -188
+    -212
+    -224
+    -236
+    124
+    100
+    88
+    64
+    40
+    16
+    -8
+    -32
+    -56
+    -80
+    -104
+    -118
+    -116
+    8
+    
+    
+}
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+    Looks.SwitchCostumeTo(a);
+    Looks.SetSizeTo(200);
+    Call Calculate Letter Sizes;
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Clear Font Letters)
+{
+    Control.DeleteThisClone();
+}
+
+WhenBroadcastReceived(First Trainer Battle)
+{
+    Event.Broadcast("Stop - Game Loop");
+    Call Write("You have been challenged") at x(-150) y(-125);
+    Call Write("to a Pokemon Battle!") at x(-150) y(-155);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Event.Broadcast("Battle Scene");
+    BATTLE SCENE = "true";
+    PLAYER TURN = 1;
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Heal)
+{
+    Call Write("Unown used Heal!") at x(-200) y(28);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Heal failed)
+{
+    Control.Wait(1);
+    Call Write("But it failed!") at x(-200) y(0);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Opponent1 defeated)
+{
+    Event.Broadcast("Clear Font Letters");
+    Call Write("Unown has fainted!") at x(-200) y(28);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    PLAYER X = 625;
+    PLAYER Y = 185;
+    BATTLE SCENE = "false";
+    Looks.SwitchBackdropTo(backdrop1);
+    Event.Broadcast("Battle finished");
+    Event.Broadcast("Start - Game Loop");
+    Looks.Hide();
+    Pen.Clear();
+}
+
+WhenBroadcastReceived(Player defeated)
+{
+    Event.Broadcast("Clear Font Letters");
+    Call Write("Your Pokemon has fainted!") at x(-200) y(28);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    PLAYER X = 625;
+    PLAYER Y = 185;
+    BATTLE SCENE = "false";
+    Looks.SwitchBackdropTo(backdrop1);
+    Event.Broadcast("Battle finished");
+    Event.Broadcast("Start - Game Loop");
+    Looks.Hide();
+    Pen.Clear();
+}
+
+WhenBroadcastReceived(Pokemon chosen)
+{
+    Call Write("Good luck in your quest Ash!") at x(-200) y(-125);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Professor Oak Text)
+{
+    Call Write("Hello Ash! Welcome to my home!") at x(-200) y(-125);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+    Control.Wait(.5);
+    Call Write("I can help you in your quest") at x(-200) y(-125);
+    Call Write("to become a Pokemon trainer") at x(-200) y(-150);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+    Control.Wait(.5);
+    Call Write("What Pokemon do you choose?") at x(-200) y(-125);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+    Event.Broadcast("Choose Pokemon");
+}
+
+WhenBroadcastReceived(Psychic)
+{
+    Call Write("Unown used Psychic!") at x(-200) y(28);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Psychic)
+{
+    Event.Broadcast("Clear Font Letters");
+    Call Write("It`s not very effettive") at x(-200) y(28);
+    Control.Wait(3);
+    Event.Broadcast("Clear Font Letters");
+    PLAYER X = 625;
+    PLAYER Y = 185;
+    BATTLE SCENE = "false";
+    Looks.SwitchBackdropTo(backdrop1);
+    Event.Broadcast("Battle finished");
+    Event.Broadcast("Start - Game Loop");
+    Looks.Hide();
+    Pen.Clear();
+}
+
+WhenBroadcastReceived(Tri Attack)
+{
+    Call Write("Unown used Tri Attack!") at x(-200) y(28);
+    Control.Wait(2);
+    Event.Broadcast("Clear Font Letters");
+    Looks.Hide();
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Calculate Letter Sizes (warp=true)
+{
+    List.DeleteAll(_width);
+    List.DeleteAll(_offset x);
+    Looks.SwitchCostumeTo(Operator.Round(0));
+    Repeat (Costume.GetNumberName(number))
+    {
+        Looks.NextCostume();
+        Motion.SetY(0);
+        If (Variable.Length(Costume.GetNumberName(name)) == 1)
+        {
+            Motion.SetX(-9999);
+            Repeat Until (Not (Sensing.TouchingObject(_edge_)))
+            {
+                Motion.ChangeXBy(1);
+            }
+            Motion.ChangeXBy(240);
+            xx = Motion.XPosition();
+            Motion.SetX(9999);
+            Repeat Until (Not (Sensing.TouchingObject(_edge_)))
+            {
+                Motion.ChangeXBy(-1);
+            }
+            List.Add(_offset x, xx);
+            List.Add(_width, (2 + ((xx + 240) - Motion.XPosition())));
+        }
+        Else
+        {
+            List.Add(_offset x, "");
+            List.Add(_width, "");
+        }
+    }
+}
+
+Define Write(string text) at x(string x) y(string y) (warp=true)
+{
+    Looks.Show();
+    txt = text;
+    xx = x;
+    Motion.SetY(y);
+    i = 0;
+    Repeat (Variable.Length(txt))
+    {
+        i += 1;
+        Looks.SwitchCostumeTo(Operator.LetterOf(txt, i));
+        If (Not ((Costume.GetNumberName(name) == " ")))
+        {
+            Motion.SetX((xx + _offset x[Costume.GetNumberName(number)]));
+            Control.CreateCloneOf(_myself_);
+        }
+        xx += _width[Costume.GetNumberName(number)];
+    }
+}
+
+
+//----- Orphaned blocks -----------------------------------------------------------------------------------------------
+
+Motion.GoTo(Attack Box 1)
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+ .png
+!.png
+".png
+#.png
+$.png
+%.png
+&.png
+'.png
+*.png
+,.png
+-.png
+..svg
+0.png
+1.png
+2.png
+3.png
+4.png
+5.png
+6.png
+7.png
+8.png
+9.png
+:.png
+;.png
+>.png
+?.png
+@.png
+A.png
+a.png
+B.png
+b.png
+C.png
+c.png
+D.png
+d.png
+E.png
+e.png
+F.png
+f.png
+G.png
+g.png
+H.png
+h.png
+I.png
+i.png
+J.png
+j.png
+K.png
+k.png
+L.png
+l.png
+M.png
+m.png
+N.png
+n.png
+O.png
+o.png
+P.png
+p.png
+Q.png
+q.png
+R.png
+r.png
+S.png
+s.png
+T.png
+t.png
+Text Box.svg
+Text Box Outline.svg
+U.png
+u.png
+V.png
+v.png
+W.png
+w.png
+X.png
+x.png
+Y.png
+y.png
+Z.png
+z.png
+“.png
+”.png
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+Croak.wav

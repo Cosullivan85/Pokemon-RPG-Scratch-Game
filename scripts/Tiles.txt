@@ -1,0 +1,914 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+brush = 
+drag x = 
+drag y = 
+focus palette = 
+gidx = 21313
+gx = 385
+i = 10
+palette dx = 4
+palette dy = 0
+palette meta editor = 0
+pal width = 168
+pin string = 000000000
+tmp = 22321
+
+
+//----- Lists ---------------------------------------------------------------------------------------------------------
+
+split = { 
+    1
+    0
+    1
+    1
+    0
+    1
+    1
+    0
+    1
+}
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    ONION MODE = 0;
+    palette meta editor = 0;
+    Looks.SetSizeTo(200);
+    Looks.Hide();
+}
+
+
+//----- Key pressed events --------------------------------------------------------------------------------------------
+
+WhenKeyPressed(0)
+{
+    ONION MODE = 0;
+    If (EDITOR > 0)
+    {
+        EDITOR = 0;
+        Variable.Hide(LAYER);
+    }
+    Else
+    {
+        EDITOR = 1;
+        Variable.Show(LAYER);
+    }
+}
+
+WhenKeyPressed(1)
+{
+    Call Set Layer(1);
+}
+
+WhenKeyPressed(2)
+{
+    Call Set Layer(2);
+}
+
+WhenKeyPressed(3)
+{
+    Call Set Layer(3);
+}
+
+WhenKeyPressed(p)
+{
+    palette meta editor = (1 - palette meta editor);
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Paint - Background)
+{
+    Call Paint Layer(1);
+    Call Paint Layer(2);
+}
+
+WhenBroadcastReceived(Paint - Layer 3)
+{
+    Call Paint Layer(3);
+    focus palette = "";
+    If (EDITOR > 0)
+    {
+        Call Paint - Editor;
+        Call Paint - Pallette;
+    }
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Calculate Brush Position (warp=true)
+{
+    gx = floor(((Sensing.MouseX() + CAM X) / 32));
+    gy = floor(((Sensing.MouseY() + CAM Y) / 32));
+    gidx = ((1 + gx) + (gy * GMAX));
+    If Sensing.KeyPressed(space)
+    {
+        If (drag x > "")
+        {
+            brush += (gx - drag x);
+            brush += (-18 * (gy - drag y));
+        }
+        drag x = gx;
+        drag y = gy;
+    }
+    Else
+    {
+        drag x = "";
+        drag y = "";
+    }
+}
+
+Define Draw Collision Pins(string x)(string y) (warp=true)
+{
+    Pen.SetPenSizeTo(5);
+    pin string = TILE PINS[gidx];
+    Motion.ChangeXBy(-11);
+    Motion.ChangeYBy(-11);
+    i = 1;
+    Repeat (3)
+    {
+        Repeat (3)
+        {
+            Call Draw Pin of Type(Operator.LetterOf(pin string, i));
+            Motion.ChangeXBy(11);
+            i += 1;
+        }
+        Motion.ChangeXBy(-33);
+        Motion.ChangeYBy(11);
+    }
+    Motion.GoToXY(x, y);
+}
+
+Define Draw Pin of Type(string type) (warp=true)
+{
+    If (type == 1)
+    {
+        Pen.SetPenColorToColor(#73dcff);
+    }
+    Else
+    {
+        Pen.SetPenColorToColor(#ffffff);
+        Pen.SetPenTo(transparency, 90);
+    }
+    Pen.Down();
+    Pen.Clear();
+    If (Sensing.DistanceTo(_mouse_) < 5.5)
+    {
+        If Sensing.KeyPressed(1)
+        {
+            Call Set Pin(i) of tile(gidx) to(1);
+        }
+        Else
+        {
+            If Sensing.KeyPressed(x)
+            {
+                Call Set Pin(i) of tile(gidx) to(0);
+            }
+            Else
+            {
+            }
+        }
+    }
+}
+
+Define Paint - Editor (warp=true)
+{
+    If (Sensing.MouseX() > (230 - pal width))
+    {
+        Stop(this script);
+    }
+    Call Calculate Brush Position;
+    Motion.SetX((((gx * 32) - CAM X) + 16));
+    Motion.SetY((((gy * 32) - CAM Y) + 16));
+    Looks.SetEffectTo(GHOST, 25);
+    Looks.SwitchCostumeTo(brush);
+    Pen.Stamp();
+    Looks.ClearGraphicEffects();
+    Looks.SwitchCostumeTo(Outline);
+    Pen.Stamp();
+    tmp = (gidx + ((LAYER - 1) * GMUL));
+    If Sensing.MouseDown()
+    {
+        List.ReplaceItem(GRID, tmp, brush);
+    }
+    If Sensing.KeyPressed(e)
+    {
+        brush = GRID[tmp];
+    }
+}
+
+Define Paint - Pallette (warp=true)
+{
+    pal width = ((5 * 32) + 8);
+    If (Sensing.MouseX() > (240 - pal width))
+    {
+        Call Scroll Palette;
+    }
+    Pen.SetPenSizeTo(pal width);
+    Motion.GoToXY((240 - (pal width / 2)), 180);
+    Pen.SetPenColorToColor(#000000);
+    Pen.Down();
+    Motion.SetY(-180);
+    Pen.Clear();
+    gidx = ((20 + palette dx) + (palette dy * 18));
+    Motion.SetY((180 - (16 + 4)));
+    gx = "";
+    Repeat (11)
+    {
+        Motion.SetX(((240 - pal width) + (16 + 4)));
+        Repeat (5)
+        {
+            Looks.SwitchCostumeTo(Mask);
+            Pen.Stamp();
+            If (Sensing.MouseDown() And Sensing.TouchingObject(_mouse_))
+            {
+                brush = gidx;
+            }
+            Looks.SwitchCostumeTo(gidx);
+            Pen.Stamp();
+            If (palette meta editor > 0)
+            {
+                Call Draw Collision Pins(Motion.XPosition())(Motion.YPosition());
+            }
+            If (gidx == brush)
+            {
+                gx = Motion.XPosition();
+                gy = Motion.YPosition();
+            }
+            gidx += 1;
+            Motion.ChangeXBy(32);
+        }
+        gidx += (18 - 5);
+        Motion.ChangeYBy(-32);
+    }
+    If (gx > "")
+    {
+        Motion.GoToXY(gx, gy);
+        Looks.SwitchCostumeTo(Outline);
+        Pen.Stamp();
+    }
+}
+
+Define Paint Layer(string layer number) (warp=true)
+{
+    If (ONION MODE > 0)
+    {
+        If (Not ((LAYER == layer number)))
+        {
+            Looks.SetEffectTo(GHOST, 80);
+        }
+    }
+    gx = (CAM X - 240);
+    gy = (CAM Y - 180);
+    gidx = (1 + floor((gx / 32)));
+    gidx += (GMAX * floor((gy / 32)));
+    gidx += ((layer number - 1) * GMUL);
+    Looks.SwitchCostumeTo(BIG);
+    Motion.SetY(((16 - 180) - (gy % 32)));
+    Repeat (13)
+    {
+        Motion.SetX(((16 - 240) - (gx % 32)));
+        Repeat (16)
+        {
+            If (GRID[gidx] > "")
+            {
+                Looks.SwitchCostumeTo(GRID[gidx]);
+                Pen.Stamp();
+                Looks.SwitchCostumeTo(BIG);
+            }
+            Motion.ChangeXBy(32);
+            gidx += 1;
+        }
+        Motion.ChangeYBy(32);
+        gidx += (GMAX - 16);
+    }
+    Looks.SetEffectTo(GHOST, 0);
+}
+
+Define Scroll Palette (warp=true)
+{
+    focus palette = 1;
+    If ((TICK % 2) > 0)
+    {
+        Stop(this script);
+    }
+    palette dx += Sensing.Of(joy x, Player);
+    palette dy += (0 - Sensing.Of(joy y, Player));
+    If (palette dx < 0)
+    {
+        palette dx = 0;
+    }
+    If (palette dy < 0)
+    {
+        palette dy = 0;
+    }
+    If (palette dx > (18 - 5))
+    {
+        palette dx = (18 - 5);
+    }
+    If (palette dy > 19)
+    {
+        palette dy = 19;
+    }
+}
+
+Define Set Layer(string layer number) (warp=true)
+{
+    If (EDITOR > 0)
+    {
+        If (palette meta editor < 1)
+        {
+            If (LAYER == layer number)
+            {
+                ONION MODE = (1 - ONION MODE);
+            }
+            Else
+            {
+                LAYER = layer number;
+            }
+        }
+    }
+}
+
+Define Set Pin(string pin #) of tile(string tile #) to(string value) (warp=true)
+{
+    Repeat ((tile # - List.Length(TILE PINS)))
+    {
+        List.Add(TILE PINS, 000000000);
+    }
+    pin string = TILE PINS[tile #];
+    List.DeleteAll(split);
+    Repeat (9)
+    {
+        List.Add(split, Operator.LetterOf(pin string, (List.Length(split) + 1)));
+    }
+    List.ReplaceItem(split, pin #, value);
+    List.ReplaceItem(TILE PINS, tile #, split);
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+---12---.svg
+---18---.png
+---18---2.svg
+BIG.svg
+bonfire>5.png
+bonfire_prop_lit_anim2.png
+bonfire_prop_lit_anim3.png
+bonfire_prop_lit_anim4.png
+bonfire_prop_lit_anim5.png
+l1.png
+l2.png
+l3.png
+Mask.png
+Outline.png
+reserved2.png
+reserved3.png
+reserved4.png
+reserved5.png
+reserved6.png
+reserved7.png
+reserved8.png
+reserved9.png
+reserved10.png
+reserved11.png
+reserved12.png
+reserved13.png
+tile000.png
+tile000>8.png
+tile000^2.png
+tile001.png
+tile001^2.png
+tile002.png
+tile002^2.png
+tile003.png
+tile003^2.png
+tile004.png
+tile004^2.png
+tile005.png
+tile005^2.png
+tile006.png
+tile006^2.png
+tile007.png
+tile007^2.png
+tile008.png
+tile009.png
+tile010.png
+tile011.png
+tile012.png
+tile012^3.png
+tile013.png
+tile013^3.png
+tile014.png
+tile014^3.png
+tile015.png
+tile015^3.png
+tile016.png
+tile016^3.png
+tile017.png
+tile017^0.png
+tile018.png
+tile019.png
+tile020.png
+tile021.png
+tile022.png
+tile023.png
+tile024.png
+tile025.png
+tile026.png
+tile027.png
+tile028.png
+tile029.png
+tile030.png
+tile030^3.png
+tile031.png
+tile031^3.png
+tile032.png
+tile032^3.png
+tile033.png
+tile033^3.png
+tile034.png
+tile034^3.png
+tile035.png
+tile035^0.png
+tile036.png
+tile036^2.png
+tile037.png
+tile037^2.png
+tile038.png
+tile038^2.png
+tile039.png
+tile039^2.png
+tile040.png
+tile040^2.png
+tile041.png
+tile041^2.png
+tile042.png
+tile042^2.png
+tile043.png
+tile043^2.png
+tile044.png
+tile045.png
+tile046.png
+tile047.png
+tile048.png
+tile048^3.png
+tile049.png
+tile049^3.png
+tile050.png
+tile050^3.png
+tile051.png
+tile051^3.png
+tile052.png
+tile052^3.png
+tile053.png
+tile053^3.png
+tile054.png
+tile055.png
+tile056.png
+tile056^2.png
+tile057.png
+tile057^2.png
+tile058.png
+tile058^2.png
+tile059.png
+tile059^2.png
+tile060.png
+tile060^2.png
+tile061.png
+tile061^2.png
+tile062.png
+tile063.png
+tile064.png
+tile065.png
+tile066.png
+tile066^2.png
+tile067.png
+tile067^2.png
+tile068.png
+tile068^2.png
+tile069.png
+tile069^2.png
+tile070.png
+tile070^2.png
+tile071.png
+tile071^2.png
+tile072.png
+tile072^2.png
+tile073.png
+tile073^2.png
+tile074.png
+tile074^2.png
+tile075.png
+tile075^2.png
+tile076.png
+tile076^2.png
+tile077.png
+tile077^2.png
+tile078.png
+tile078^2.png
+tile079.png
+tile079^2.png
+tile080.png
+tile081.png
+tile081^0.png
+tile082.png
+tile083.png
+tile084.png
+tile084^2.png
+tile085.png
+tile085^2.png
+tile086.png
+tile086^2.png
+tile087.png
+tile087^2.png
+tile088.png
+tile088^2.png
+tile089.png
+tile089^2.png
+tile090.png
+tile090^2.png
+tile091.png
+tile091^2.png
+tile092.png
+tile092^2.png
+tile093.png
+tile093^2.png
+tile094.png
+tile094^2.png
+tile095.png
+tile095^2.png
+tile096.png
+tile096^2.png
+tile097.png
+tile097^2.png
+tile098.png
+tile098^2.png
+tile099.png
+tile099^2.png
+tile2.png
+tile2>8.png
+tile3.png
+tile4.png
+tile5.png
+tile6.png
+tile7.png
+tile8.png
+tile9.png
+tile10.png
+tile11.png
+tile12.png
+tile13.png
+tile14.png
+tile15.png
+tile16.png
+tile17.png
+tile18.png
+tile19.png
+tile20.png
+tile21.png
+tile22.png
+tile23.png
+tile24.png
+tile25.png
+tile26.png
+tile27.png
+tile28.png
+tile29.png
+tile30.png
+tile31.png
+tile32.png
+tile33.png
+tile34.png
+tile35.png
+tile36.png
+tile37.png
+tile38.png
+tile39.png
+tile40.png
+tile41.png
+tile42.png
+tile43.png
+tile44.png
+tile45.png
+tile46.png
+tile47.png
+tile48.png
+tile49.png
+tile50.png
+tile51.png
+tile52.png
+tile53.png
+tile54.png
+tile55.png
+tile56.png
+tile57.png
+tile58.png
+tile59.png
+tile60.png
+tile61.png
+tile62.png
+tile63.png
+tile64.png
+tile65.png
+tile66.png
+tile67.png
+tile68.png
+tile69.png
+tile70.png
+tile71.png
+tile72.png
+tile73.png
+tile74.png
+tile75.png
+tile76.png
+tile77.png
+tile78.png
+tile79.png
+tile80.png
+tile81.png
+tile82.png
+tile83.png
+tile84.png
+tile85.png
+tile86.png
+tile87.png
+tile88.png
+tile89.png
+tile90.png
+tile91.png
+tile92.png
+tile93.png
+tile94.png
+tile95.png
+tile96.png
+tile97.png
+tile98.png
+tile99.png
+tile100.png
+tile101.png
+tile102.png
+tile103.png
+tile104.png
+tile105.png
+tile106.png
+tile107.png
+tile108.png
+tile109.png
+tile110.png
+tile111.png
+tile112.png
+tile113.png
+tile114.png
+tile115.png
+tile116.png
+tile117.png
+tile118.png
+tile119.png
+tile120.png
+tile121.png
+tile122.png
+tile123.png
+tile124.png
+tile125.png
+tile126.png
+tile127.png
+tile128.png
+tile129.png
+tile130.png
+tile131.png
+tile132.png
+tile133.png
+tile134.png
+tile135.png
+tile136.png
+tile137.png
+tile138.png
+tile139.png
+tile140.png
+tile141.png
+tile142.png
+tile143.png
+tile144.png
+tile145.png
+tile146.png
+tile147.png
+tile148.png
+tile149.png
+tile150.png
+tile151.png
+tile152.png
+tile153.png
+tile154.png
+tile155.png
+tile156.png
+tile157.png
+tile158.png
+tile159.png
+tile160.png
+tile161.png
+tile162.png
+tile163.png
+tile164.png
+tile165.png
+tile166.png
+tile167.png
+tile168.png
+tile169.png
+tile170.png
+tile171.png
+tile172.png
+tile173.png
+tile174.png
+tile175.png
+tile176.png
+tile177.png
+tile178.png
+tile179.png
+tile180.png
+tile181.png
+tile182.png
+tile183.png
+tile184.png
+tile185.png
+tile186.png
+tile187.png
+tile188.png
+tile189.png
+tile190.png
+tile191.png
+tile192.png
+tile193.png
+tile194.png
+tile195.png
+tile196.png
+tile197.png
+tile198.png
+tile199.png
+tile200.png
+tile201.png
+tile202.png
+tile203.png
+tile204.png
+tile205.png
+tile206.png
+tile207.png
+tile208.png
+tile209.png
+tile210.png
+tile211.png
+tile212.png
+tile213.png
+tile214.png
+tile215.png
+tile216.png
+tile217.png
+tile218.png
+tile219.png
+tile220.png
+tile221.png
+tile222.png
+tile223.png
+tile224.png
+tile225.png
+tile226.png
+tile227.png
+tile228.png
+tile229.png
+tile230.png
+tile231.png
+tile232.png
+tile233.png
+tile234.png
+tile235.png
+tile236.png
+tile237.png
+tile238.png
+tile239.png
+tile240.png
+tile241.png
+tile242.png
+tile243.png
+tile244.png
+tile245.png
+tile246.png
+tile247.png
+tile248.png
+tile249.png
+tile250.png
+tile251.png
+tile252.png
+tile253.png
+tile254.png
+tile255.png
+tile256.png
+tile257.png
+tile258.png
+tile259.png
+tile260.png
+tile261.png
+tile262.png
+tile263.png
+tile264.png
+tile265.png
+tile266.png
+tile267.png
+tile268.png
+tile269.png
+tile270.png
+tile271.png
+tile272.png
+tile273.png
+tile274.png
+tile275.png
+tile276.png
+tile277.png
+tile278.png
+tile279.png
+tile280.png
+tile281.png
+tile282.png
+tile283.png
+tile284.png
+tile285.png
+tile286.png
+tile287.png
+tile288.png
+tile289.png
+tile290.png
+tile291.png
+tile292.png
+tile293.png
+tile294.png
+tile295.png
+tile296.png
+tile297.png
+tile298.png
+tile299.png
+tile300.png
+tile301.png
+tile302.png
+tile303.png
+tile304.png
+tile305.png
+tile306.png
+tile307.png
+tile308.png
+tile309.png
+tile310.png
+tile311.png
+tile312.png
+tile313.png
+tile314.png
+tile315.png
+tile316.png
+tile317.png
+tile318.png
+tile319.png
+tile320.png
+tile321.png
+tile322.png
+tile323.png
+tile324.png
+tile325.png
+tile326.png
+tile327.png
+tile328.png
+tile329.png
+tile330.png
+tile331.png
+tile332.png
+tile333.png
+tile334.png
+tile335.png
+tile336.png
+tile337.png
+tile338.png
+tile339.png
+tile340.png
+tile341.png
+tile342.png
+tile343.png
+tile344.png
+tile345.png
+tile346.png
+tile347.png
+tile348.png
+tile349.png
+tile350.png
+tile351.png
+tile352.png
+tile353.png
+tile354.png
+tile355.png
+tile356.png
+tile357.png
+tile358.png
+tile359.png
+tile360.png

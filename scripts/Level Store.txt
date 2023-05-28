@@ -1,0 +1,60 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    GMUL = (GMAX * GMAX);
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Store - Load Scene)
+{
+    Call New Map;
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Add to Grid(string count) tiles of(string tile) (warp=true)
+{
+    Repeat (count)
+    {
+        If ((tile == "") And (Operator.Random(1 / 10) == 1))
+        {
+            List.Add(GRID, Operator.Random(76 / 79));
+        }
+        Else
+        {
+            List.Add(GRID, tile);
+        }
+    }
+}
+
+Define New Map (warp=true)
+{
+    List.DeleteAll(GRID);
+    GMAX = 100;
+    Call Add to Grid(GMAX) tiles of(79);
+    Repeat ((GMAX - 2))
+    {
+        List.Add(GRID, 79);
+        Call Add to Grid((GMAX - 2)) tiles of("");
+        List.Add(GRID, 79);
+    }
+    Call Add to Grid(GMAX) tiles of(79);
+    Repeat ((2 * GMUL))
+    {
+        List.Add(GRID, "");
+    }
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

@@ -1,0 +1,68 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Forever
+    {
+        Looks.NextCostume();
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    Looks.Show();
+    Looks.SetSizeTo(125);
+    Motion.GoToXY(180, 120);
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+dcb4owa-82bbd3bb-1132-4277-95bd-347d34867119.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671192.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671193.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671194.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671195.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671196.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671197.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671198.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d348671199.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711910.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711911.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711912.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711913.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711914.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711915.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711916.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711917.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711918.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711919.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711920.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711921.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711922.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711923.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711924.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711925.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711926.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711927.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711928.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711929.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711930.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711931.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711932.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711933.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711934.png
+dcb4owa-82bbd3bb-1132-4277-95bd-347d3486711935.png

@@ -1,0 +1,115 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Forever
+    {
+        Looks.NextCostume();
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    If (POKEMON CHOICE == "gengar")
+    {
+        Looks.Show();
+        Looks.SetSizeTo(100);
+        Motion.GoToXY(-170, -120);
+    }
+}
+
+WhenBroadcastReceived(Choose Pokemon)
+{
+    Motion.GoToXY(-30, -100);
+    Looks.SetSizeTo(50);
+    Looks.Show();
+    Repeat Until (Not ((POKEMON CHOICE == "")))
+    {
+        If (Sensing.TouchingObject(_mouse_) And Sensing.MouseDown())
+        {
+            POKEMON CHOICE = "gengar";
+            Event.Broadcast("Pokemon chosen");
+        }
+    }
+}
+
+WhenBroadcastReceived(Pokemon chosen)
+{
+    Looks.Hide();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+shiny_mega_gengar_by_midnightsshinies_d9nmwid.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid2.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid3.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid4.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid5.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid6.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid7.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid8.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid9.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid10.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid11.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid12.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid13.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid14.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid15.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid16.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid17.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid18.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid19.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid20.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid21.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid22.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid23.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid24.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid25.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid26.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid27.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid28.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid29.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid30.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid31.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid32.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid33.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid34.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid35.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid36.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid37.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid38.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid39.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid40.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid41.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid42.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid43.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid44.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid45.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid46.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid47.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid48.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid49.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid50.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid51.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid52.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid53.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid54.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid55.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid56.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid57.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid58.png
+shiny_mega_gengar_by_midnightsshinies_d9nmwid59.png

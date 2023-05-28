@@ -1,0 +1,32 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.SetSizeTo(200);
+    Costume.GoToFrontBack(front);
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Paint - Background)
+{
+    Motion.GoToXY((0 - (CAM X % 32)), (0 - (CAM Y % 32)));
+    If (ONION MODE > 0)
+    {
+        Pen.Clear();
+        Looks.SetEffectTo(GHOST, 80);
+    }
+    Else
+    {
+        Looks.SetEffectTo(GHOST, 0);
+    }
+    Pen.Stamp();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+Grass.png
+Room.png
+tiny.svg

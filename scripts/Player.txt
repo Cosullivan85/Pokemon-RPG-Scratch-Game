@@ -1,0 +1,392 @@
+//----- Variables -----------------------------------------------------------------------------------------------------
+
+base costume = 1
+frame = 0
+gidx = 620
+gx = 0
+gy2 = 0
+joy dist = 0
+joy x = 0
+joy y = 0
+pin = 1
+pin string = 000000000
+solid = 0
+tile = 74
+tmp = 2960
+
+
+
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.ClearGraphicEffects();
+    Looks.SetSizeTo(200);
+    Costume.GoToFrontBack(front);
+    Looks.SwitchCostumeTo(idle180);
+    Looks.SwitchBackdropTo(backdrop1);
+    Looks.Hide();
+    PLAYER TURN = 0;
+    OPPONENT1 HEALTH = 100;
+    PLAYER HEALTH = 100;
+    EDITOR = 0;
+    gidx = 0;
+    PROFESSOR OAK VISITED = 0;
+    FIRST TRAINER BATTLE = "false";
+    TICK = 0;
+    PLAYER DIR = 180;
+    PLAYER X = 240;
+    PLAYER Y = 180;
+    POKEMON CHOICE = "";
+    BATTLE SCENE = "false";
+    List.ReplaceItem(GRID, 1732, 468);
+    List.ReplaceItem(GRID, 1632, 468);
+    Event.Broadcast("Start - Game Loop");
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle Scene)
+{
+    Looks.Hide();
+    Pen.Clear();
+    Looks.SwitchBackdropTo(battle scene);
+}
+
+WhenBroadcastReceived(Check First Trainer Battle)
+{
+    If (((gidx == 620) And (PROFESSOR OAK VISITED == 1)) And (FIRST TRAINER BATTLE == "false"))
+    {
+        Event.Broadcast("First Trainer Battle");
+        FIRST TRAINER BATTLE = "true";
+    }
+}
+
+WhenBroadcastReceived(Check Professor Oak)
+{
+    If ((PROFESSOR OAK VISITED == 0) And (gidx == 306))
+    {
+        Sound.Play(Door Creak);
+        Pen.Clear();
+        Looks.SwitchBackdropTo(in a house);
+        PLAYER X = -10;
+        PLAYER Y = -160;
+    }
+}
+
+WhenBroadcastReceived(Opponent1 defeated)
+{
+    List.ReplaceItem(GRID, 1732, "");
+    List.ReplaceItem(GRID, 1632, "");
+}
+
+WhenBroadcastReceived(Paint - Player)
+{
+    If (Backdrop.GetNumberName(number) == 2)
+    {
+        Motion.SetX(PLAYER X);
+        Motion.SetY((PLAYER Y + 10));
+        Looks.SwitchCostumeTo((base costume + floor((frame % 6))));
+        Costume.GoToFrontBack(front);
+        Looks.Show();
+    }
+    Else
+    {
+        Motion.SetX((PLAYER X - CAM X));
+        Motion.SetY(((PLAYER Y + 10) - CAM Y));
+        Looks.SwitchCostumeTo((base costume + floor((frame % 6))));
+        Pen.Stamp();
+    }
+}
+
+WhenBroadcastReceived(Start - Game Loop)
+{
+    Forever
+    {
+        If (Backdrop.GetNumberName(number) == 2)
+        {
+            Pen.Clear();
+            Event.Broadcast("Professor Oaks House");
+            Event.Broadcast("Tick - Player");
+            Event.Broadcast("Paint - Player");
+            If (Sensing.TouchingObject(Professor Oak) And (PROFESSOR OAK VISITED == 0))
+            {
+                Event.Broadcast("Professor Oak Text");
+                PROFESSOR OAK VISITED = 1;
+            }
+            If (((PROFESSOR OAK VISITED == 1) And Sensing.TouchingObject(_edge_)) And (Not ((POKEMON CHOICE == ""))))
+            {
+                Event.Broadcast("Left Professor Oaks House");
+                Pen.Clear();
+                Looks.SwitchBackdropTo(backdrop1);
+                PLAYER X = 160;
+                PLAYER Y = 90;
+            }
+        }
+        Else
+        {
+            Event.Broadcast("Tick - Player");
+            Event.Broadcast("Paint - Background");
+            Event.Broadcast("Paint - Player");
+            Event.Broadcast("Paint - Layer 3");
+            Event.Broadcast("Check Professor Oak");
+            Event.Broadcast("Check First Trainer Battle");
+        }
+    }
+}
+
+WhenBroadcastReceived(Stop - Game Loop)
+{
+    Stop(other scripts in sprite);
+}
+
+WhenBroadcastReceived(Tick - Player)
+{
+    TICK += 1;
+    Call Player - Controls;
+    If (joy dist > 0)
+    {
+        Call Player Movement;
+    }
+    Else
+    {
+        Looks.SwitchCostumeTo(Operator.Join("idle", PLAYER DIR));
+        base costume = Costume.GetNumberName(number);
+        frame = 0;
+    }
+    Call Move Camera;
+}
+
+
+//----- Custom blocks -------------------------------------------------------------------------------------------------
+
+Define Check solid across layers(string gidx) pin(string pin #) (warp=true)
+{
+    Call Check solid at(gidx) at pin(pin #);
+    Call Check solid at((gidx + GMUL)) at pin(pin #);
+}
+
+Define Check solid all around(string x)(string y) (warp=true)
+{
+    solid = 0;
+    Call Get Grid Index((x + 8))((y + 8));
+    Call Check solid across layers(gidx) pin(pin);
+    If (gx == 0)
+    {
+        Call Check solid across layers((gidx - 1)) pin((pin + 2));
+        If (gy2 == 0)
+        {
+            Call Check solid across layers((gidx - (GMAX - 1))) pin(9);
+        }
+    }
+    If (gy2 == 0)
+    {
+        Call Check solid across layers((gidx - GMAX)) pin((pin + 6));
+    }
+}
+
+Define Check solid at(string gidx) at pin(string pin #) (warp=true)
+{
+    tile = GRID[gidx];
+    pin string = TILE PINS[tile];
+    If (Operator.LetterOf(pin string, pin #) > solid)
+    {
+        solid = Operator.LetterOf(pin string, pin #);
+    }
+}
+
+Define Get Grid Index(string x)(string y) (warp=true)
+{
+    gx = floor((x / 32));
+    gy2 = floor((y / 32));
+    gidx = (1 + (gx + (gy2 * GMAX)));
+    gx = floor(((x / 16) % 2));
+    gy2 = floor(((y / 16) % 2));
+    pin = (1 + (gx + (gy2 * 3)));
+}
+
+Define Move Camera (warp=true)
+{
+    If (EDITOR == 1)
+    {
+        tmp = Sensing.Of(pal width, Tiles);
+    }
+    Else
+    {
+        tmp = 0;
+    }
+    CAM X = (PLAYER X + (tmp / 2));
+    CAM Y = PLAYER Y;
+    If (CAM X < 240)
+    {
+        CAM X = 240;
+    }
+    If (CAM Y < 180)
+    {
+        CAM Y = 180;
+    }
+    tmp += ((GMAX * 32) - 240);
+    If (CAM X > tmp)
+    {
+        CAM X = tmp;
+    }
+    If (CAM Y > ((GMAX * 32) - 180))
+    {
+        CAM Y = ((GMAX * 32) - 180);
+    }
+}
+
+Define Player - Controls (warp=true)
+{
+    joy x = (Sensing.KeyPressed(right arrow) Or Sensing.KeyPressed(d));
+    joy x += (0 - (Sensing.KeyPressed(left arrow) Or Sensing.KeyPressed(a)));
+    joy y = (Sensing.KeyPressed(up arrow) Or Sensing.KeyPressed(w));
+    joy y += (0 - (Sensing.KeyPressed(down arrow) Or Sensing.KeyPressed(s)));
+    If (Sensing.Of(focus palette, Tiles) == "")
+    {
+        joy dist = sqrt(((joy x * joy x) + (joy y * joy y)));
+    }
+    Else
+    {
+        joy dist = "";
+    }
+}
+
+Define Player Movement (warp=true)
+{
+    If (joy dist > 1)
+    {
+        joy dist = 1.25;
+    }
+    joy x = (joy x / joy dist);
+    joy y = (joy y / joy dist);
+    Call Try Move((joy x * 5))((joy y * 5));
+    If (joy x < 0)
+    {
+        PLAYER DIR = -90;
+    }
+    Else
+    {
+        If (joy x > 0)
+        {
+            PLAYER DIR = 90;
+        }
+        Else
+        {
+            If (joy y < 0)
+            {
+                PLAYER DIR = 180;
+            }
+            Else
+            {
+                PLAYER DIR = 0;
+            }
+        }
+    }
+    Looks.SwitchCostumeTo(Operator.Join("walk", PLAYER DIR));
+    base costume = Costume.GetNumberName(number);
+    frame += 0.3;
+}
+
+Define Try Move(string dx)(string dy) (warp=true)
+{
+    If (EDITOR > 0)
+    {
+        PLAYER X += (dx * 2);
+        PLAYER Y += (dy * 2);
+        Stop(this script);
+    }
+    If (Backdrop.GetNumberName(number) == 2)
+    {
+        If ((Sensing.TouchingObject(Professor Oak) Or Sensing.TouchingObject(Table)) Or Sensing.TouchingColour(#ba4a4a))
+        {
+            PLAYER X += (dx * -3);
+            PLAYER Y += (dy * -3);
+            Stop(this script);
+        }
+        Else
+        {
+            PLAYER X += dx;
+            PLAYER Y += dy;
+            Stop(this script);
+        }
+    }
+    Call Check solid all around((PLAYER X + dx))(PLAYER Y);
+    If (solid < 1)
+    {
+        PLAYER X += dx;
+    }
+    Call Check solid all around(PLAYER X)((PLAYER Y + dy));
+    If (solid < 1)
+    {
+        PLAYER Y += dy;
+    }
+    Stop(this script);
+}
+
+
+//----- Orphaned blocks -----------------------------------------------------------------------------------------------
+
+last?
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+AttackB-90.png
+AttackB-90.1.png
+AttackB-90.2.png
+AttackB-90.3.png
+AttackB-90.4.png
+AttackB-90.5.png
+AttackB0.png
+AttackB0.1.png
+AttackB0.2.png
+AttackB0.3.png
+AttackB0.4.png
+AttackB0.5.png
+AttackB90.png
+AttackB90.1.png
+AttackB90.2.png
+AttackB90.3.png
+AttackB90.4.png
+AttackB90.5.png
+AttackB180.png
+AttackB180.1.png
+AttackB180.2.png
+AttackB180.3.png
+AttackB180.4.png
+AttackB180.5.png
+idle-90.png
+idle0.png
+idle90.png
+idle180.png
+walk-90.png
+walk-90.1.png
+walk-90.2.png
+walk-90.3.png
+walk-90.4.png
+walk-90.5.png
+walk0.png
+walk0.1.png
+walk0.2.png
+walk0.3.png
+walk0.4.png
+walk0.5.png
+walk90.png
+walk90.1.png
+walk90.2.png
+walk90.3.png
+walk90.4.png
+walk90.5.png
+walk180.png
+walk180.1.png
+walk180.2.png
+walk180.3.png
+walk180.4.png
+walk180.5.png
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+Door Creak.wav

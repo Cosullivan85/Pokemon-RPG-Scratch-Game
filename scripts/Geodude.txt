@@ -1,0 +1,114 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Forever
+    {
+        Looks.NextCostume();
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    If (POKEMON CHOICE == "geodude")
+    {
+        Looks.Show();
+        Looks.SetSizeTo(100);
+        Motion.GoToXY(-170, -120);
+    }
+}
+
+WhenBroadcastReceived(Choose Pokemon)
+{
+    Motion.GoToXY(50, -100);
+    Looks.SetSizeTo(75);
+    Looks.Show();
+    Repeat Until (Not ((POKEMON CHOICE == "")))
+    {
+        If (Sensing.TouchingObject(_mouse_) And Sensing.MouseDown())
+        {
+            POKEMON CHOICE = "geodude";
+            Event.Broadcast("Pokemon chosen");
+            Looks.Hide();
+        }
+    }
+}
+
+WhenBroadcastReceived(Pokemon chosen)
+{
+    Looks.Hide();
+}
+
+
+//----- Orphaned blocks -----------------------------------------------------------------------------------------------
+
+POKEMON CHOICE = "geodude"
+
+POKEMON CHOICE = "geodude"
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+geodude_by_creepyjellyfish_d7a49lr.png
+geodude_by_creepyjellyfish_d7a49lr2.png
+geodude_by_creepyjellyfish_d7a49lr3.png
+geodude_by_creepyjellyfish_d7a49lr4.png
+geodude_by_creepyjellyfish_d7a49lr5.png
+geodude_by_creepyjellyfish_d7a49lr6.png
+geodude_by_creepyjellyfish_d7a49lr7.png
+geodude_by_creepyjellyfish_d7a49lr8.png
+geodude_by_creepyjellyfish_d7a49lr9.png
+geodude_by_creepyjellyfish_d7a49lr10.png
+geodude_by_creepyjellyfish_d7a49lr11.png
+geodude_by_creepyjellyfish_d7a49lr12.png
+geodude_by_creepyjellyfish_d7a49lr13.png
+geodude_by_creepyjellyfish_d7a49lr14.png
+geodude_by_creepyjellyfish_d7a49lr15.png
+geodude_by_creepyjellyfish_d7a49lr16.png
+geodude_by_creepyjellyfish_d7a49lr17.png
+geodude_by_creepyjellyfish_d7a49lr18.png
+geodude_by_creepyjellyfish_d7a49lr19.png
+geodude_by_creepyjellyfish_d7a49lr20.png
+geodude_by_creepyjellyfish_d7a49lr21.png
+geodude_by_creepyjellyfish_d7a49lr22.png
+geodude_by_creepyjellyfish_d7a49lr23.png
+geodude_by_creepyjellyfish_d7a49lr24.png
+geodude_by_creepyjellyfish_d7a49lr25.png
+geodude_by_creepyjellyfish_d7a49lr26.png
+geodude_by_creepyjellyfish_d7a49lr27.png
+geodude_by_creepyjellyfish_d7a49lr28.png
+geodude_by_creepyjellyfish_d7a49lr29.png
+geodude_by_creepyjellyfish_d7a49lr30.png
+geodude_by_creepyjellyfish_d7a49lr31.png
+geodude_by_creepyjellyfish_d7a49lr32.png
+geodude_by_creepyjellyfish_d7a49lr33.png
+geodude_by_creepyjellyfish_d7a49lr34.png
+geodude_by_creepyjellyfish_d7a49lr35.png
+geodude_by_creepyjellyfish_d7a49lr36.png
+geodude_by_creepyjellyfish_d7a49lr37.png
+geodude_by_creepyjellyfish_d7a49lr38.png
+geodude_by_creepyjellyfish_d7a49lr39.png
+geodude_by_creepyjellyfish_d7a49lr40.png
+geodude_by_creepyjellyfish_d7a49lr41.png
+geodude_by_creepyjellyfish_d7a49lr42.png
+geodude_by_creepyjellyfish_d7a49lr43.png
+geodude_by_creepyjellyfish_d7a49lr44.png
+geodude_by_creepyjellyfish_d7a49lr45.png
+geodude_by_creepyjellyfish_d7a49lr46.png
+geodude_by_creepyjellyfish_d7a49lr47.png
+geodude_by_creepyjellyfish_d7a49lr48.png
+geodude_by_creepyjellyfish_d7a49lr49.png
+geodude_by_creepyjellyfish_d7a49lr50.png

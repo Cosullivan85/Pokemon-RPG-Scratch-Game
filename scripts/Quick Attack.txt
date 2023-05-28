@@ -1,0 +1,49 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Quick attack)
+{
+    If ((BATTLE SCENE == "true") And (PLAYER TURN == 1))
+    {
+        Motion.GoToXY(-62, -123);
+        Looks.SetSizeTo(10);
+        Looks.SwitchCostumeTo(costume1);
+        Costume.GoToFrontBack(front);
+        Looks.Show();
+        Repeat (9)
+        {
+            Looks.ChengeSizeBy(10);
+        }
+        Control.Wait(.25);
+        Motion.GlideTo(motion_glideto_menu ?? - probably legacy function from Scratch 2.0, 1);
+        Looks.NextCostume();
+        Control.Wait(.25);
+        Looks.Hide();
+        PLAYER TURN = 2;
+        ATTACK CHOICE = Operator.Random(1 / 3);
+        Event.BroadcastAndWait("DAMAGE");
+    }
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+costume2.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

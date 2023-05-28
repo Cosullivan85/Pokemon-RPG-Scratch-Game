@@ -1,0 +1,95 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+WhenGreenFlagClicked()
+{
+    Forever
+    {
+        Looks.NextCostume();
+    }
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Battle finished)
+{
+    Looks.Hide();
+}
+
+WhenBroadcastReceived(Battle Scene)
+{
+    If (POKEMON CHOICE == "pikachu")
+    {
+        Looks.Show();
+        Looks.SetSizeTo(100);
+        Motion.GoToXY(-170, -120);
+    }
+}
+
+WhenBroadcastReceived(Choose Pokemon)
+{
+    Motion.GoToXY(-95, -100);
+    Looks.SetSizeTo(75);
+    Looks.Show();
+    Repeat Until (Not ((POKEMON CHOICE == "")))
+    {
+        If (Sensing.TouchingObject(_mouse_) And Sensing.MouseDown())
+        {
+            POKEMON CHOICE = "pikachu";
+            Event.Broadcast("Pokemon chosen");
+            Looks.Hide();
+        }
+    }
+}
+
+WhenBroadcastReceived(Pokemon chosen)
+{
+    Looks.Hide();
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew2.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew3.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew4.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew5.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew6.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew7.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew8.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew9.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew10.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew11.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew12.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew13.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew14.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew15.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew16.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew17.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew18.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew19.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew20.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew21.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew22.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew23.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew24.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew25.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew26.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew27.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew28.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew29.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew30.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew31.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew32.png
+cap_pikachu__unova___025_by_pokemon3dsprites_dawfnew33.png
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav

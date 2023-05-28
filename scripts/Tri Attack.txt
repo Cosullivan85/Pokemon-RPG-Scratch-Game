@@ -1,0 +1,44 @@
+//----- Green flag events ---------------------------------------------------------------------------------------------
+
+WhenGreenFlagClicked()
+{
+    Looks.Hide();
+}
+
+
+//----- Broadcast received events -------------------------------------------------------------------------------------
+
+WhenBroadcastReceived(Opponent Attack)
+{
+    If ((OPPONENT1 HEALTH > 1) And (ATTACK CHOICE == 2))
+    {
+        Control.Wait(2);
+        Motion.GoTo(Unown);
+        Looks.SetSizeTo(10);
+        Costume.GoToFrontBack(front);
+        Looks.Show();
+        Repeat (9)
+        {
+            Looks.ChengeSizeBy(10);
+        }
+        Motion.GlideTo(-146, -119, 1);
+        Control.Wait(.25);
+        Looks.NextCostume();
+        Event.BroadcastAndWait("Tri Attack");
+        PLAYER TURN = 1;
+        ATTACK CHOICE = 0;
+        Control.Wait(.25);
+        Looks.Hide();
+    }
+}
+
+
+//----- Costumes ------------------------------------------------------------------------------------------------------
+
+costume1.svg
+costume2.svg
+
+
+//----- Sounds --------------------------------------------------------------------------------------------------------
+
+pop.wav
